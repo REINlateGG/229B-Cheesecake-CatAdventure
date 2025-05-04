@@ -1,52 +1,68 @@
-using System.Security.Cryptography.X509Certificates;
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float Speed;
-    //float move;
-    Vector2 moveInput;
-    public float JumpForce;
-    public bool IsJumping;
+    public float speed = 5f;
+    public float jumpForce = 10f;
+    private bool isGrounded = false;
 
-    Rigidbody2D rb2d;
+    private Rigidbody2D rb;
+    private Animator anim;
+    private SpriteRenderer sr;
 
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();  // ต้องมี Animator ติดไว้
+        sr = GetComponent<SpriteRenderer>();
+        
+        // ป้องกันการหมุนเอียงตอนกระโดด
+        rb.freezeRotation = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        float move = Input.GetAxisRaw("Horizontal");
 
-        moveInput = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw("Vertical"));
-        rb2d.AddForce (moveInput*Speed);
+        // เดินด้วยการตั้ง velocity ตรง ๆ จะควบคุมได้ดีกว่า AddForce
+        rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
 
-        //move = Input.GetAxis("Horizontal");
-        //rb2d.linearVelocity = new Vector2(move * Speed, rb2d.linearVelocity.y);
+        // พลิกตัวตามทิศทาง
+        if (move > 0) sr.flipX = false;
+        else if (move < 0) sr.flipX = true;
 
-        if (Input.GetButtonDown("Jump"))
+        // กระโดด
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            rb2d.AddForce(new Vector2(rb2d.linearVelocity.x, JumpForce));
-            Debug.Log("Jump");
-        }
-    }
-
-    private void OCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            IsJumping = false;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            isGrounded = false;
+            anim.SetBool("isJumping", !isGrounded);
         }
 
     }
 
-    private void OnCollisionExit2D(Collision2D other)  
+    void FixedUpdate()
+    {
+        anim.SetFloat("xVelocity", Math.Abs(rb.linearVelocity.x));
+        anim.SetFloat("yVelocity", rb.linearVelocity.y);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            IsJumping = true;
+            isGrounded = true;
+            anim.SetBool("isJumping", !isGrounded);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 }

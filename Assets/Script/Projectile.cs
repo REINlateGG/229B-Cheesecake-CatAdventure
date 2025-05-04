@@ -6,6 +6,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] GameObject target; //target sprite
     [SerializeField] Rigidbody2D bulletPrefab;
 
+    public int damage = 1;
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -52,4 +54,5 @@ public class Projectile : MonoBehaviour
 
         return projectileVelocity;
     }
+
 }
