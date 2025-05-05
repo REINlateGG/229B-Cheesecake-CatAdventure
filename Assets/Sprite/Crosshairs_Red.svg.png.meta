@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Crosshairs_Red.svg_0: -105375440484514829
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
