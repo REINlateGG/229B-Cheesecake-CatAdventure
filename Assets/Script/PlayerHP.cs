@@ -13,8 +13,7 @@ public class PlayerHP : MonoBehaviour
     public AudioClip damageSound;
     private AudioSource audioSource;
 
-    public Slider healthSlider; // ลาก UI Slider มาผูก
-    // หรือจะใช้ Text ก็ได้ เช่น public Text healthText;
+    public Slider healthSlider;
     
 
     void Start()
@@ -60,10 +59,8 @@ public class PlayerHP : MonoBehaviour
             yield return null;
         }
 
-        // fully faded to black
+        // fade
         fadeImage.color = new Color(color.r, color.g, color.b, 1f);
-
-        // โหลด scene ถัดไป
         SceneManager.LoadScene("GameOver");
     }
 }

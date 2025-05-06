@@ -18,27 +18,20 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();  // ต้องมี Animator ติดไว้
+        anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
-
         audioSource = GetComponent<AudioSource>();
-        
-        // ป้องกันการหมุนเอียงตอนกระโดด
         rb.freezeRotation = true;
     }
 
     void Update()
     {
         float move = Input.GetAxisRaw("Horizontal");
-
-        // เดินด้วยการตั้ง velocity ตรง ๆ จะควบคุมได้ดีกว่า AddForce
         rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
 
-        // พลิกตัวตามทิศทาง
         if (move > 0) sr.flipX = false;
         else if (move < 0) sr.flipX = true;
 
-        // กระโดด
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);

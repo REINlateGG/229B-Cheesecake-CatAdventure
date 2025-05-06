@@ -25,7 +25,7 @@ public class FinishTrigger : MonoBehaviour
             {
                 Debug.Log("You Win!");
                 audioSource.PlayOneShot(winSound);
-                StartCoroutine(WinSequence());
+                StartCoroutine(WinScene());
             }
             else
             {
@@ -42,8 +42,9 @@ public class FinishTrigger : MonoBehaviour
         notEnoughCoinText.SetActive(false);
     }
 
-    IEnumerator WinSequence()
+    IEnumerator WinScene()
     {
+        yield return new WaitForSeconds(4f);
         float time = 0f;
         Color color = fadeImage.color;
 
@@ -54,11 +55,10 @@ public class FinishTrigger : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-
-        // fully faded to black
+        
+        // fade
         fadeImage.color = new Color(color.r, color.g, color.b, 1f);
 
-        // โหลด scene ถัดไป
         SceneManager.LoadScene("WinandCredit");
     }
 }
