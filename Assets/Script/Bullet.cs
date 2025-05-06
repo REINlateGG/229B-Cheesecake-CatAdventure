@@ -3,7 +3,12 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public int damage = 1;
-    
+
+    void Start()
+    {
+        Destroy(gameObject, 5f);
+    }
+
      private void OnTriggerEnter2D(Collider2D collider2D)
     {
         if (collider2D.CompareTag("Enemy"))
@@ -16,4 +21,6 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+
 }
