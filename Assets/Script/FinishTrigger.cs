@@ -7,7 +7,14 @@ public class FinishTrigger : MonoBehaviour
 {
     public GameObject notEnoughCoinText;
     public Image fadeImage;
-    public float fadeDuration = 1.5f;
+    public float fadeDuration = 4f;
+    public AudioClip winSound;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -17,6 +24,7 @@ public class FinishTrigger : MonoBehaviour
             if (coinCollector != null && coinCollector.HasEnoughCoins())
             {
                 Debug.Log("You Win!");
+                audioSource.PlayOneShot(winSound);
                 StartCoroutine(WinSequence());
             }
             else

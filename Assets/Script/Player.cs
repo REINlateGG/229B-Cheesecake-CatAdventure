@@ -12,11 +12,16 @@ public class Player : MonoBehaviour
     private Animator anim;
     private SpriteRenderer sr;
 
+    public AudioClip jumpSound;
+    private AudioSource audioSource;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();  // ต้องมี Animator ติดไว้
         sr = GetComponent<SpriteRenderer>();
+
+        audioSource = GetComponent<AudioSource>();
         
         // ป้องกันการหมุนเอียงตอนกระโดด
         rb.freezeRotation = true;
@@ -39,6 +44,7 @@ public class Player : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             isGrounded = false;
             anim.SetBool("isJumping", !isGrounded);
+            audioSource.PlayOneShot(jumpSound);
         }
 
     }

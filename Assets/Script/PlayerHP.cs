@@ -10,8 +10,8 @@ public class PlayerHP : MonoBehaviour
     public AudioClip gameOverSound;
     public Image fadeImage;
     public float fadeDuration = 1.5f;
+    public AudioClip damageSound;
     private AudioSource audioSource;
-    private bool isGameOver = false;
 
     public Slider healthSlider; // ลาก UI Slider มาผูก
     // หรือจะใช้ Text ก็ได้ เช่น public Text healthText;
@@ -27,9 +27,11 @@ public class PlayerHP : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHP -= damage;
+        audioSource.PlayOneShot(damageSound);
         if (currentHP <= 0)
         {
             currentHP = 0;
+            audioSource.PlayOneShot(gameOverSound);
             Debug.Log("Player Died");
             StartCoroutine(GameOver());
         }

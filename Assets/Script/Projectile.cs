@@ -5,8 +5,14 @@ public class Projectile : MonoBehaviour
     [SerializeField] Transform shootPoint;
     [SerializeField] GameObject target; //target sprite
     [SerializeField] Rigidbody2D bulletPrefab;
+    public AudioClip shootSound;
+    private AudioSource audioSource;
 
-    public int damage = 1;
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
 
     void Update()
     {
@@ -24,6 +30,8 @@ public class Projectile : MonoBehaviour
             {
                 target.transform.position = new Vector2(hit.point.x, hit.point.y);
                 Debug.Log("hit " + hit.collider.name);
+
+                audioSource.PlayOneShot(shootSound);
 
                 //calculate projectile velocity
                 Vector2 projectileVelocity = CalculateProjectileVelocity(shootPoint.position, hit.point, 1f);
